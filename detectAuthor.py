@@ -21,8 +21,18 @@ def getWords(text):
     '''
     words = []
     for string in text:
-        cleanString = cleanUp(string)
-        words += cleanString.split(' ')
+        cleanedString = cleanUp(string)
+        words += cleanedString.split(' ')
+
+    i = 0
+    for word in words:
+        if len(word) < 1:
+            words.remove(word)
+        elif word == ' ':
+            words.remove(word)
+        else:
+            words[i] = cleanUp(word)
+        i += 1
     
     return words 
     
