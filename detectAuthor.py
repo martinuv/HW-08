@@ -19,7 +19,10 @@ def getWords(text):
     ''' Returns a list of the words (in order) that are stored
     in text. text is a list of strings.
     '''
-    pass # remove this line and add your own code instead 
+    cleanText = cleanUp(text)
+    cleanText = cleanText.split(' ')
+    
+    return cleanText 
     
 
 def getSentences(text):
