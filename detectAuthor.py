@@ -29,7 +29,17 @@ def getSentences(text):
     with each item corresponding to one line in a file; sentences
     don't automatically end with new lines in a file).
     '''
-    pass # remove this line and add your own code instead 
+    sentences = []
+    sentence = ''
+    for line in text:
+        for char in line:
+            if char != '.' and char != '?' and char != '!':
+                sentence += char
+            else:
+                sentences.append(sentence)
+                sentence = ''
+
+    return sentences
 
 
 def cleanUp(s):
