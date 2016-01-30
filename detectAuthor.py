@@ -6,7 +6,8 @@
     Created 1/30/2015
     Python Version: 3.4
 
-    DESCRIPTION
+    Attempts to determine the author of a text based on word and sentence
+    metrics derived from known texts.
 
     CS111, Winter 2016
 '''
