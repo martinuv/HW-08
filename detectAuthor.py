@@ -22,7 +22,7 @@ def getWords(text):
     words = []
     for string in text:
         cleanedString = cleanUp(string)
-        words += cleanedString.split(' ')
+        words += cleanedString.split()
 
     i = 0
     for word in words:
