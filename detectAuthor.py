@@ -23,7 +23,14 @@ def getWords(text):
     Parameters:
         text - A list of strings.
     '''
-    wordList = []        
+    wordList = []
+    i = 0
+    for line in text:
+        for word in line.split():
+            wordList[i] = cleanUp(word)
+            i += 1
+        
+    return wordList
     
 
 def getSentences(text):
@@ -38,12 +45,13 @@ def getSentences(text):
     '''
     sentenceList = []
     i = 0
-    for word in text:
-        if word[-1] == '.' or word[-1] == '!' or word[-1] == '?':
-            sentenceList[i] += word[:len(word) - 1]
-            i += 1
-        else:
-            sentenceList[i] += word + ' '
+    for line in text:
+        for word in line.split(' '):
+            if word[-1] == '.' or word[-1] == '!' or word[-1] == '?':
+                sentenceList[i] += word[:len(word) - 1]
+                i += 1
+            else:
+                sentenceList[i] += word + ' '
             
     return sentenceList
 
