@@ -68,15 +68,31 @@ def cleanUp(s):
 
 # Functions for linguistic features
 def averageWordLength(text):
-    '''Add a comment here and implement! (Part I)
+    '''Returns a float representing the average word length in a given text.
+    
+    Parameters:
+        text - A list of strings
     '''
-    pass # remove this and add your own code instead
+    wordList = getWords(text)
+    avg = 0
+    for word in wordList:
+        avg += len(word)
+        
+    return avg / len(wordList)
 
 
 def averageSentenceLength(text):
-    '''Add a comment here and implement! (Part I)
+    '''Returns a float representing the average sentence length in a given text.
+    
+    Parameters:
+        text - A list of strings
     '''    
-    pass # remove this and add your own code instead
+    sentenceList = getSentences(text)
+    avg = 0
+    for sentence in sentenceList:
+        avg += len(getWords(sentence))
+        
+    return avg / len(sentenceList)
 
 
 def averageSentenceComplexity(text):
