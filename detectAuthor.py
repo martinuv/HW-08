@@ -18,9 +18,12 @@ import os.path
 # Functions for getting words and sentences
 def getWords(text):
     ''' Returns a list of the words (in order) that are stored
-    in text. text is a list of strings.
+    in text.
+    
+    Parameters:
+        text - A list of strings.
     '''
-    pass # remove this line and add your own code instead 
+    wordList = []        
     
 
 def getSentences(text):
@@ -29,8 +32,20 @@ def getSentences(text):
     multiple items in the list (e.g., text might be a list
     with each item corresponding to one line in a file; sentences
     don't automatically end with new lines in a file).
+    
+    Parameters:
+        text - A list of strings
     '''
-    pass # remove this line and add your own code instead 
+    sentenceList = []
+    i = 0
+    for word in text:
+        if word[-1] == '.' or word[-1] == '!' or word[-1] == '?':
+            sentenceList[i] += word[:len(word) - 1]
+            i += 1
+        else:
+            sentenceList[i] += word + ' '
+            
+    return sentenceList
 
 
 def cleanUp(s):
