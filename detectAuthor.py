@@ -24,7 +24,6 @@ def getWords(text):
         text - A list of strings.
     '''
     wordList = []
-    i = 0
     for line in text:
         for word in line.split():
             wordList.append(cleanUp(word))
