@@ -15,6 +15,13 @@
 import os
 import os.path
 
+
+def readFile(fileName):
+    textFile = open(fileName, 'r')
+    text = textFile.readlines()
+    return text
+
+
 # Functions for getting words and sentences
 def getWords(text):
     ''' Returns a list of the words (in order) that are stored
@@ -26,7 +33,8 @@ def getWords(text):
     wordList = []
     for line in text:
         for word in line.split():
-            wordList.append(cleanUp(word))
+            if cleanUp(word) != '':
+                wordList.append(cleanUp(word))
         
     return wordList
     
