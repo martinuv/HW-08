@@ -19,23 +19,13 @@ def getWords(text):
     ''' Returns a list of the words (in order) that are stored
     in text. text is a list of strings.
     '''
-    words = []
-    for string in text:
-        cleanedString = cleanUp(string)
-        words += cleanedString.split()
+wordList = []
+    for line in text:
+        for word in line.split():
+            wordList.append(cleanUp(word))
+        
+    return wordList
 
-    i = 0
-    for word in words:
-        if len(word) < 1:
-            words.remove(word)
-        elif word == ' ':
-            words.remove(word)
-        else:
-            words[i] = cleanUp(word)
-        i += 1
-    
-    return words 
-    
 
 def getSentences(text):
     ''' Returns a list of the sentences (in order) that are stored
