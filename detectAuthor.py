@@ -41,15 +41,17 @@ def getSentences(text):
     Parameters:
         text - A list of strings
     '''
-    sentenceList = []
+    sentences = []
+    sentence = ''
     for line in text:
-        for word in line.split(' '):
-            if word[-1] == '.' or word[-1] == '!' or word[-1] == '?':
-                sentenceList.append(word[:len(word) - 1])
+        for char in line:
+            if char != '.' and char != '?' and char != '!':
+                sentence += char
             else:
-                sentenceList.append(word + ' ')
-            
-    return sentenceList
+                sentences.append(sentence)
+                sentence = ''
+
+    return sentences
 
 
 def cleanUp(s):
