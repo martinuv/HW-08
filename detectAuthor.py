@@ -42,14 +42,12 @@ def getSentences(text):
         text - A list of strings
     '''
     sentenceList = []
-    i = 0
     for line in text:
         for word in line.split(' '):
             if word[-1] == '.' or word[-1] == '!' or word[-1] == '?':
-                sentenceList[i] += word[:len(word) - 1]
-                i += 1
+                sentenceList.append(word[:len(word) - 1])
             else:
-                sentenceList[i] += word + ' '
+                sentenceList.append(word + ' ')
             
     return sentenceList
 
