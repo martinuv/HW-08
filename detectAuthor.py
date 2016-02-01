@@ -92,9 +92,12 @@ def averageSentenceLength(text):
 
 
 def averageSentenceComplexity(text):
-    '''Add a comment here and implement! (Part I)
-    '''    
-    pass # remove this and add your own code instead
+    '''Returns a float representing the average number of phrases per sentence in a given text.
+    
+    Parameters:
+        text - A list of strings
+    '''
+    
 
 
 def typeToTokenRatio(text):
