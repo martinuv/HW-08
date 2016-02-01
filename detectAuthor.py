@@ -17,6 +17,13 @@ import os.path
 
 
 def readFile(fileName):
+    ''' Reads the text of a file line by line into text.
+
+    Parameters:
+        fileName - Name of the file to read
+
+    Returns: Each line of the file as a value in text. 
+    '''
     textFile = open(fileName, 'r')
     text = textFile.readlines()
     return text
