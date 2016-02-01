@@ -4,7 +4,7 @@
     Sam Nozaki
 
     Created 1/30/2015
-    Python Version: 3.4
+    Python Version: 3.5
 
     Attempts to determine the author of a text based on word and sentence
     metrics derived from known texts.
