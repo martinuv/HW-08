@@ -96,7 +96,8 @@ def averageSentenceLength(text):
 
 
 def averageSentenceComplexity(text):
-    '''Returns a float representing the average number of phrases per sentence in a given text.
+    '''Returns a float representing the average number of phrases per sentence 
+    in a given text.
     
     Parameters:
         text - A list of strings
