@@ -27,8 +27,7 @@ def getWords(text):
     i = 0
     for line in text:
         for word in line.split():
-            wordList[i] = cleanUp(word)
-            i += 1
+            wordList.append(cleanUp(word))
         
     return wordList
     
