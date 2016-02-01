@@ -4,7 +4,7 @@
     Sam Nozaki
 
     Created 1/30/2015
-    Python Version: 3.4
+    Python Version: 3.5
 
     Attempts to determine the author of a text based on word and sentence
     metrics derived from known texts.
@@ -15,9 +15,21 @@
 import os
 import os.path
 
+
+def readFile(fileName):
+    '''Reads the text of a file line by line into text, returns text.
+
+    Parameters:
+        fileName - Name of the file to read 
+    '''
+    textFile = open(fileName, 'r')
+    text = textFile.readlines()
+    return text
+
+
 # Functions for getting words and sentences
 def getWords(text):
-    ''' Returns a list of the words (in order) that are stored
+    '''Returns a list of the words (in order) that are stored
     in text.
     
     Parameters:
@@ -26,13 +38,14 @@ def getWords(text):
     wordList = []
     for line in text:
         for word in line.split():
-            wordList.append(cleanUp(word))
+            if cleanUp(word) != '':
+                wordList.append(cleanUp(word))
         
     return wordList
     
 
 def getSentences(text):
-    ''' Returns a list of the sentences (in order) that are stored
+    '''Returns a list of the sentences (in order) that are stored
     in text. text is a list of strings; sentences may extend across
     multiple items in the list (e.g., text might be a list
     with each item corresponding to one line in a file; sentences
@@ -41,19 +54,21 @@ def getSentences(text):
     Parameters:
         text - A list of strings
     '''
-    sentenceList = []
+    sentences = []
+    sentence = ''
     for line in text:
-        for word in line.split(' '):
-            if word[-1] == '.' or word[-1] == '!' or word[-1] == '?':
-                sentenceList.append(word[:len(word) - 1])
+        for char in line:
+            if char != '.' and char != '?' and char != '!':
+                sentence += char
             else:
-                sentenceList.append(word + ' ')
-            
-    return sentenceList
+                sentences.append(sentence)
+                sentence = ''
+
+    return sentences
 
 
 def cleanUp(s):
-    ''' Returns a string which is a copy of s in which all letters have been
+    '''Returns a string which is a copy of s in which all letters have been
     converted to lowercase and punctuation characters have been stripped 
     from both ends. Inner punctuation is left untouched. 
     '''
