@@ -6,7 +6,8 @@
     Created 1/30/2015
     Python Version: 3.4
 
-    DESCRIPTION
+    Attempts to determine the author of a text based on word and sentence
+    metrics derived from known texts.
 
     CS111, Winter 2016
 '''
@@ -17,24 +18,17 @@ import os.path
 # Functions for getting words and sentences
 def getWords(text):
     ''' Returns a list of the words (in order) that are stored
-    in text. text is a list of strings.
-    '''
-    words = []
-    for string in text:
-        cleanedString = cleanUp(string)
-        words += cleanedString.split()
-
-    i = 0
-    for word in words:
-        if len(word) < 1:
-            words.remove(word)
-        elif word == ' ':
-            words.remove(word)
-        else:
-            words[i] = cleanUp(word)
-        i += 1
+    in text.
     
-    return words 
+    Parameters:
+        text - A list of strings.
+    '''
+    wordList = []
+    for line in text:
+        for word in line.split():
+            wordList.append(cleanUp(word))
+        
+    return wordList
     
 
 def getSentences(text):
@@ -43,6 +37,9 @@ def getSentences(text):
     multiple items in the list (e.g., text might be a list
     with each item corresponding to one line in a file; sentences
     don't automatically end with new lines in a file).
+    
+    Parameters:
+        text - A list of strings
     '''
     sentences = []
     sentence = ''
@@ -69,15 +66,31 @@ def cleanUp(s):
 
 # Functions for linguistic features
 def averageWordLength(text):
-    '''Add a comment here and implement! (Part I)
+    '''Returns a float representing the average word length in a given text.
+    
+    Parameters:
+        text - A list of strings
     '''
-    pass # remove this and add your own code instead
+    wordList = getWords(text)
+    avg = 0
+    for word in wordList:
+        avg += len(word)
+        
+    return avg / len(wordList)
 
 
 def averageSentenceLength(text):
-    '''Add a comment here and implement! (Part I)
+    '''Returns a float representing the average sentence length in a given text.
+    
+    Parameters:
+        text - A list of strings
     '''    
-    pass # remove this and add your own code instead
+    sentenceList = getSentences(text)
+    avg = 0
+    for sentence in sentenceList:
+        avg += len(getWords(sentence))
+        
+    return avg / len(sentenceList)
 
 
 def averageSentenceComplexity(text):
