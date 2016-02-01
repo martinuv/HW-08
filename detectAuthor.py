@@ -17,12 +17,10 @@ import os.path
 
 
 def readFile(fileName):
-    ''' Reads the text of a file line by line into text.
+    '''Reads the text of a file line by line into text, returns text.
 
     Parameters:
-        fileName - Name of the file to read
-
-    Returns: Each line of the file as a value in text. 
+        fileName - Name of the file to read 
     '''
     textFile = open(fileName, 'r')
     text = textFile.readlines()
@@ -31,7 +29,7 @@ def readFile(fileName):
 
 # Functions for getting words and sentences
 def getWords(text):
-    ''' Returns a list of the words (in order) that are stored
+    '''Returns a list of the words (in order) that are stored
     in text.
     
     Parameters:
@@ -47,7 +45,7 @@ def getWords(text):
     
 
 def getSentences(text):
-    ''' Returns a list of the sentences (in order) that are stored
+    '''Returns a list of the sentences (in order) that are stored
     in text. text is a list of strings; sentences may extend across
     multiple items in the list (e.g., text might be a list
     with each item corresponding to one line in a file; sentences
@@ -70,7 +68,7 @@ def getSentences(text):
 
 
 def cleanUp(s):
-    ''' Returns a string which is a copy of s in which all letters have been
+    '''Returns a string which is a copy of s in which all letters have been
     converted to lowercase and punctuation characters have been stripped 
     from both ends. Inner punctuation is left untouched. 
     '''
