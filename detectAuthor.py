@@ -49,7 +49,7 @@ def getSentences(text):
         for char in line:
             if char != '.' and char != '?' and char != '!':
                 sentence += char
-            else:
+            elif sentence != '':
                 sentences.append(sentence)
                 sentence = ''
 
