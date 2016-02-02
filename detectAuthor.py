@@ -16,17 +16,6 @@ import os
 import os.path
 
 
-def readFile(fileName):
-    '''Reads the text of a file line by line into text, returns text.
-
-    Parameters:
-        fileName - Name of the file to read 
-    '''
-    textFile = open(fileName, 'r')
-    text = textFile.readlines()
-    return text
-
-
 # Functions for getting words and sentences
 def getWords(text):
     '''Returns a list of the words (in order) that are stored
@@ -60,7 +49,7 @@ def getSentences(text):
         for char in line:
             if char != '.' and char != '?' and char != '!':
                 sentence += char
-            else:
+            elif sentence != '':
                 sentences.append(sentence)
                 sentence = ''
 
@@ -107,7 +96,8 @@ def averageSentenceLength(text):
 
 
 def averageSentenceComplexity(text):
-    '''Returns a float representing the average number of phrases per sentence in a given text.
+    '''Returns a float representing the average number of phrases per sentence 
+    in a given text.
     
     Parameters:
         text - A list of strings
@@ -115,7 +105,7 @@ def averageSentenceComplexity(text):
     phrases = 1
     for line in text:
         for char in line:
-            if char == ',' and char == ';' and char == ':':
+            if char == ',' or char == ';' or char == ':':
                 phrases += 1
 
     avePhrases = (phrases + len(getSentences(text))) / len(getSentences(text))
@@ -286,4 +276,17 @@ def printSignature(signature):
 def main():
     '''Implement this and add a comment describing what it does!
     '''
-    pass # delete this line and add your own code
+    filename = input('Please enter a filename: ')
+    while os.path.exists(filename) != True:
+        print('File not found...')
+        filename = input('Please enter a filename: ')
+   
+    file = open(filename, 'r')
+    text = file.readlines()
+    file.close()
+
+    print('### Statistics for the file', filename, '###\n')
+    print('Average Word Length:', averageWordLength(text), 'characters.')
+    print('Average Sentence Length:', averageSentenceLength(text), 'words.')
+    print('Sentence Complexity:', averageSentenceComplexity(text), 
+         'phrases per sentence.')
