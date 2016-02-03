@@ -119,9 +119,32 @@ def typeToTokenRatio(text):
 
 
 def hapaxLegomanaRatio(text):
-    '''Add a comment here and implement! (Part II)
+    '''Returns the ratio between the total number of words that occur exactly 
+    once divided by the total number of words in text. Again indicates 
+    repetetiveness.
+
+    Parameters:
+        text - A list of strings
     '''
-    pass # remove this and add your own code instead 
+    uniqueWords = {}
+    totalCount = 0
+
+    newWords = getWords(getSentences(text))
+    totalCount += len(newWords)
+
+    for word in newWords:
+        if word not in uniqueWords:
+            uniqueWords[word] = 1
+        else:
+            uniqueWords[word] += 1
+
+    onceWords = 0
+    for word in uniqueWords:
+        if uniqueWords[word] == 1:
+            onceWords += 1
+
+    ratio = onceWords / totalCount
+    return ratio 
 
 
 def functionWordRatios(text):
@@ -290,3 +313,4 @@ def main():
     print('Average Sentence Length:', averageSentenceLength(text), 'words.')
     print('Sentence Complexity:', averageSentenceComplexity(text), 
          'phrases per sentence.')
+    print('Hapax Legomana ratio:', hapaxLegomanaRatio(text))
