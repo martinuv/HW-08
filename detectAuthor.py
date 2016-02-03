@@ -122,13 +122,13 @@ def typeToTokenRatio(text):
     '''
     uniqueCount = []
     totalCount = 0
-    for line in text:
-        newWords = getWords(getSentences(text))
-        totalCount += len(newWords)
+    
+    newWords = getWords(getSentences(text))
+    totalCount += len(newWords)
 
-        for word in newWords:
-            if word not in uniqueCount:
-                uniqueCount.append(word)
+    for word in newWords:
+        if word not in uniqueCount:
+            uniqueCount.append(word)
 
     ratio = len(uniqueCount) / totalCount
     return ratio
@@ -306,4 +306,4 @@ def main():
     print('Average Sentence Length:', averageSentenceLength(text), 'words.')
     print('Sentence Complexity:', averageSentenceComplexity(text), 
          'phrases per sentence.')
-    print('Ratio of Unique Words to Total Words:', typeToTokenRatio(text))
+    print('Ratio of Distinct Words to Total Words:', typeToTokenRatio(text))
