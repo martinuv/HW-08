@@ -137,12 +137,8 @@ def hapaxLegomanaRatio(text):
         text - A list of strings
     '''
     uniqueWords = {}
-    totalCount = 0
 
-    newWords = getWords(getSentences(text))
-    totalCount += len(newWords)
-
-    for word in newWords:
+    for word in getWords(text):
         if word not in uniqueWords:
             uniqueWords[word] = 1
         else:
@@ -153,8 +149,7 @@ def hapaxLegomanaRatio(text):
         if uniqueWords[word] == 1:
             onceWords += 1
 
-    ratio = onceWords / totalCount
-    return ratio 
+    return onceWords / len(getWords(text))
 
 
 def functionWordRatios(text):
