@@ -113,9 +113,17 @@ def averageSentenceComplexity(text):
 
 
 def typeToTokenRatio(text):
-    '''Add a comment here and implement! (Part II)
+    '''Calculates the ratio between the number of distinct words in a text divided by the total number of words in text
+    
+    Parameters:
+        text - A list of strings
     '''    
-    pass # remove this and add your own code instead
+    distinctWords = []
+    for word in getWords(text):
+        if word not in distinctWords:
+            distinctWords.append(word)
+    
+    return len(distinctWords) / len(getWords(text))
 
 
 def hapaxLegomanaRatio(text):
