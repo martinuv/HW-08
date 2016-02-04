@@ -113,11 +113,13 @@ def averageSentenceComplexity(text):
 
 
 def typeToTokenRatio(text):
-    '''Calculates the ratio between the number of distinct words in a text divided by the total number of words in text
-    
-    Parameters:
+    '''Returns the ratio between the number of distinct words in a text divided 
+    by the total number of words in text. Gives a sense of the author's 
+    repetitiveness.
+
+    Parameters: 
         text - A list of strings
-    '''    
+    '''
     distinctWords = []
     for word in getWords(text):
         if word not in distinctWords:
@@ -298,3 +300,4 @@ def main():
     print('Average Sentence Length:', averageSentenceLength(text), 'words.')
     print('Sentence Complexity:', averageSentenceComplexity(text), 
          'phrases per sentence.')
+    print('Ratio of Distinct Words to Total Words:', typeToTokenRatio(text))
