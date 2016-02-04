@@ -105,7 +105,7 @@ def averageSentenceComplexity(text):
     phrases = 1
     for line in text:
         for char in line:
-            if char == ',' and char == ';' and char == ':':
+            if char == ',' or char == ';' or char == ':':
                 phrases += 1
 
     avePhrases = (phrases + len(getSentences(text))) / len(getSentences(text))
