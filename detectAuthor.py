@@ -153,9 +153,25 @@ def hapaxLegomanaRatio(text):
 
 
 def functionWordRatios(text):
-    '''Add a comment here and implement! (Part II)
+    '''Returns a list of ratios for each function word given by getAllFunctionWords.
+    
+    Parameters:
+        text - A list of strings
     '''
-    pass # remove this and add your own code instead 
+    functionWords = getAllFunctionWords()
+    wordCount = {}
+    ratios = []
+    for word in functionWords:
+        wordCount[word] = 0
+    
+    for word in getWords(text):
+        if word in functionWords:
+            wordCount[word] += 1
+            
+    for word in wordCount:
+        ratios.append(wordCount[word] / len(getWords(text)))
+        
+    return ratios
 
 
 def getAllFunctionWords():
