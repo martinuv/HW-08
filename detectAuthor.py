@@ -102,14 +102,13 @@ def averageSentenceComplexity(text):
     Parameters:
         text - A list of strings
     '''
-    phrases = 1
+    phrases = 0
     for line in text:
         for char in line:
             if char == ',' or char == ';' or char == ':':
                 phrases += 1
 
-    avePhrases = (phrases + len(getSentences(text))) / len(getSentences(text))
-    return avePhrases
+    return (phrases + len(getSentences(text))) / len(getSentences(text))
 
 
 def typeToTokenRatio(text):
