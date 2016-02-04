@@ -206,7 +206,11 @@ def computeSimilarity(signature1, signature2, weights):
     signature2, and weights are all lists where the 0th value in
     the list is ignored.
     '''
-    pass # remove this and add your own code instead 
+    similarity = 0
+    for i in range (1, len(weights)):
+        similarity += abs(signature1[i] - signature2[i]) * weights[i]
+        
+    return similarity
 
 
 def getWeights():
@@ -217,7 +221,7 @@ def getWeights():
     function word weights. This function assumes FunctionWordList.txt
     is in the same directory as detectAuthor.py.
     '''
-    featureWeights = [0, 11, 0.4, 4,33 , 50]
+    featureWeights = [0, 11, 0.4, 4, 33, 50]
     file = open('FunctionWordList.txt', 'r')
     for line in file:
         featureWeights.append(float(line.strip().split()[1]))
