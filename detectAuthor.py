@@ -254,9 +254,12 @@ def computeSimilarity(signature1, signature2, weights):
     the list is ignored.
     '''
     similarity = 0
-    for i in range (1, len(weights)):
+    for i in range (1, 5):
         similarity += abs(signature1[i] - signature2[i]) * weights[i]
         
+    for i in range (4):
+        similarity += abs(signature1[6][i] - signature2[6][i]) * weights[6]
+    
     return similarity
 
 
