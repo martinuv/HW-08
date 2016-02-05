@@ -52,7 +52,7 @@ def getSentences(text):
             elif sentence != '':
                 sentences.append(sentence)
                 sentence = ''
-
+    
     return sentences
 
 
@@ -91,7 +91,7 @@ def averageSentenceLength(text):
     avg = 0
     for sentence in sentenceList:
         avg += len(getWords(sentence))
-        
+    
     return avg / len(sentenceList)
 
 
@@ -198,20 +198,34 @@ def calculateSignatureFromURL(url):
     pass # remove this and add your own code instead
 
 
-def calculateSignatureFromTextFile(url):
-    '''TODO: Implement this function, filling in this comment in an
-    appropriate way. Make sure your function meets the specifications
-    in the assignment.
+def calculateSignatureFromTextFile(filename):
+    '''Returns a list of values for a given text file that represent its average word length,
+    average sentence length, average sentence complexity, type to token ratio, hapax legomana
+    ratio, and function word ratios, respectively.
+    
+    Parameters:
+        filename - Name of the file whose signature is to be calculated
     '''
-    pass # remove this and add your own code instead
+    file = open(filename, 'r')
+    text = file.read()
+    signature = ['']
+    signature.append(averageWordLength(text))
+    signature.append(averageSentenceLength(text))
+    signature.append(averageSentenceComplexity(text))
+    signature.append(typeToTokenRatio(text))
+    signature.append(hapaxLegomanaRatio(text))
+    signature.append(functionWordRatios(text))
+    file.close()
+    
+    return signature
 
 
 def readSignature(filename):
-    '''Read a linguistic signature from filename and return it as 
-    list of features. 
+    '''Read a linguistic signature from filename and return it as
+    list of features.
     '''
     file = open(filename, 'r')
-    # The first feature is the name of the author (a string) so it 
+    # The first feature is the name of the author (a string) so it
     # doesn't need casting to float
     result = [file.readline().strip()]
     # All remaining features are real numbers
