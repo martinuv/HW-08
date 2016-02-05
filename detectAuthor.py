@@ -102,32 +102,75 @@ def averageSentenceComplexity(text):
     Parameters:
         text - A list of strings
     '''
-    phrases = 1
+    phrases = 0
     for line in text:
         for char in line:
             if char == ',' or char == ';' or char == ':':
                 phrases += 1
 
-    avePhrases = (phrases + len(getSentences(text))) / len(getSentences(text))
-    return avePhrases
+    return (phrases + len(getSentences(text))) / len(getSentences(text))
 
 
 def typeToTokenRatio(text):
-    '''Add a comment here and implement! (Part II)
-    '''    
-    pass # remove this and add your own code instead
+    '''Returns the ratio between the number of distinct words in a text divided 
+    by the total number of words in text. Gives a sense of the author's 
+    repetitiveness.
+
+    Parameters: 
+        text - A list of strings
+    '''
+    distinctWords = []
+    for word in getWords(text):
+        if word not in distinctWords:
+            distinctWords.append(word)
+    
+    return len(distinctWords) / len(getWords(text))
 
 
 def hapaxLegomanaRatio(text):
-    '''Add a comment here and implement! (Part II)
+    '''Returns the ratio between the total number of words that occur exactly 
+    once divided by the total number of words in text. Again indicates 
+    repetetiveness.
+
+    Parameters:
+        text - A list of strings
     '''
-    pass # remove this and add your own code instead 
+    uniqueWords = {}
+
+    for word in getWords(text):
+        if word not in uniqueWords:
+            uniqueWords[word] = 1
+        else:
+            uniqueWords[word] += 1
+
+    onceWords = 0
+    for word in uniqueWords:
+        if uniqueWords[word] == 1:
+            onceWords += 1
+
+    return onceWords / len(getWords(text))
 
 
 def functionWordRatios(text):
-    '''Add a comment here and implement! (Part II)
+    '''Returns a list of ratios for each function word given by getAllFunctionWords.
+    
+    Parameters:
+        text - A list of strings
     '''
-    pass # remove this and add your own code instead 
+    functionWords = getAllFunctionWords()
+    wordCount = {}
+    ratios = []
+    for word in functionWords:
+        wordCount[word] = 0
+    
+    for word in getWords(text):
+        if word in functionWords:
+            wordCount[word] += 1
+            
+    for word in wordCount:
+        ratios.append(wordCount[word] / len(getWords(text)))
+        
+    return ratios
 
 
 def getAllFunctionWords():
@@ -196,7 +239,11 @@ def computeSimilarity(signature1, signature2, weights):
     signature2, and weights are all lists where the 0th value in
     the list is ignored.
     '''
-    pass # remove this and add your own code instead 
+    similarity = 0
+    for i in range (1, len(weights)):
+        similarity += abs(signature1[i] - signature2[i]) * weights[i]
+        
+    return similarity
 
 
 def getWeights():
@@ -207,7 +254,7 @@ def getWeights():
     function word weights. This function assumes FunctionWordList.txt
     is in the same directory as detectAuthor.py.
     '''
-    featureWeights = [0, 11, 0.4, 4,33 , 50]
+    featureWeights = [0, 11, 0.4, 4, 33, 50]
     file = open('FunctionWordList.txt', 'r')
     for line in file:
         featureWeights.append(float(line.strip().split()[1]))
@@ -290,3 +337,5 @@ def main():
     print('Average Sentence Length:', averageSentenceLength(text), 'words.')
     print('Sentence Complexity:', averageSentenceComplexity(text), 
          'phrases per sentence.')
+    print('Ratio of Distinct Words to Total Words:', typeToTokenRatio(text))
+    print('Hapax Legomana ratio:', hapaxLegomanaRatio(text))
