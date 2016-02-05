@@ -207,7 +207,7 @@ def calculateSignatureFromTextFile(filename):
         filename - Name of the file whose signature is to be calculated
     '''
     file = open(filename, 'r')
-    text = file.read()
+    text = file.readlines()
     signature = ['']
     signature.append(averageWordLength(text))
     signature.append(averageSentenceLength(text))
