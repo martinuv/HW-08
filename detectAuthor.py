@@ -214,7 +214,9 @@ def calculateSignatureFromTextFile(filename):
     signature.append(averageSentenceComplexity(text))
     signature.append(typeToTokenRatio(text))
     signature.append(hapaxLegomanaRatio(text))
-    signature.append(functionWordRatios(text))
+    functionRatios = functionWordRatios(text)
+    for i in functionRatios:
+        signature.append(i)
     file.close()
     
     return signature
@@ -256,9 +258,6 @@ def computeSimilarity(signature1, signature2, weights):
     similarity = 0
     for i in range (1, len(signature1) - 1):
         similarity += abs(signature1[i] - signature2[i]) * weights[i]
-        
-    for i in range (len(signature1[-1])):
-        similarity += abs(signature1[-1][i] - signature2[-1][i]) * weights[-1]
     
     return similarity
 
@@ -287,8 +286,6 @@ def getMostSimilarAuthor(signatureDirectory, mysterySignature):
         signatureDirectory - Directory where known signatures are located
         mysterySignature   - Signature to be analyzed
     '''
-    # The weights are a mixture of hardcoded weights for the non-function
-    # word features and specified in the function word file.
     featureWeights = getWeights()
     
     # The line below lists all files that are in the directory
@@ -297,23 +294,22 @@ def getMostSimilarAuthor(signatureDirectory, mysterySignature):
     # gave you or ones you've created.
     files = os.listdir(signatureDirectory)
 
-    # You'll likely want to declare some variables prior to the
-    # for loop to be able to compute author with the best similarity.
-    # Make sure you have a good idea for the steps you want to take
-    # to find the best similarity before you actually do it; make
-    # sure you and your partner can explain the algorithm to one another.
+    bestSimilarity = computeSimilarity(mysterySignature, readSignature(signatureDirectory + os.sep + files[1]), featureWeights)
+    bestMatch = files[1][0]
+    print(bestMatch)
     for currentFile in files:
         # The condition below ignores hidden files that may be created 
         # by your operating system
         if not currentFile.startswith('.'):
             # The line below calculates the signature for the current file
             signature = readSignature(signatureDirectory + os.sep + currentFile)
-            
-            # Now, compute the similarity between the signatures (you should
-            # have a function to help you!) and do anything you need to be
-            # able to return the most similar author at the end
+            similarity = computeSimilarity(mysterySignature, signature, featureWeights)
+            print(similarity)
+            if similarity < bestSimilarity:
+                bestSimilarity = similarity
+                bestMatch = currentFile[0]
     
-    # Don't forget to return the most similar author at the end
+    return bestMatch
 
 
 # Printing and user interface
