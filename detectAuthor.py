@@ -4,9 +4,10 @@
     Sam Nozaki
 
     Created 1/30/2015
-    Python Version: 3.4
+    Python Version: 3.5
 
-    DESCRIPTION
+    Attempts to determine the author of a text based on word and sentence
+    metrics derived from known texts.
 
     CS111, Winter 2016
 '''
@@ -14,31 +15,49 @@
 import os
 import os.path
 
+
 # Functions for getting words and sentences
 def getWords(text):
-    ''' Returns a list of the words (in order) that are stored
-    in text. text is a list of strings.
-    '''
-    words = []
-    for string in text:
-        cleanString = cleanUp(string)
-        words += cleanString.split(' ')
+    '''Returns a list of the words (in order) that are stored
+    in text.
     
-    return words 
+    Parameters:
+        text - A list of strings.
+    '''
+    wordList = []
+    for line in text:
+        for word in line.split():
+            if cleanUp(word) != '':
+                wordList.append(cleanUp(word))
+        
+    return wordList
     
 
 def getSentences(text):
-    ''' Returns a list of the sentences (in order) that are stored
+    '''Returns a list of the sentences (in order) that are stored
     in text. text is a list of strings; sentences may extend across
     multiple items in the list (e.g., text might be a list
     with each item corresponding to one line in a file; sentences
     don't automatically end with new lines in a file).
+    
+    Parameters:
+        text - A list of strings
     '''
-    pass # remove this line and add your own code instead 
+    sentences = []
+    sentence = ''
+    for line in text:
+        for char in line:
+            if char != '.' and char != '?' and char != '!':
+                sentence += char
+            elif sentence != '':
+                sentences.append(sentence)
+                sentence = ''
+
+    return sentences
 
 
 def cleanUp(s):
-    ''' Returns a string which is a copy of s in which all letters have been
+    '''Returns a string which is a copy of s in which all letters have been
     converted to lowercase and punctuation characters have been stripped 
     from both ends. Inner punctuation is left untouched. 
     '''
@@ -49,39 +68,109 @@ def cleanUp(s):
 
 # Functions for linguistic features
 def averageWordLength(text):
-    '''Add a comment here and implement! (Part I)
+    '''Returns a float representing the average word length in a given text.
+    
+    Parameters:
+        text - A list of strings
     '''
-    pass # remove this and add your own code instead
+    wordList = getWords(text)
+    avg = 0
+    for word in wordList:
+        avg += len(word)
+        
+    return avg / len(wordList)
 
 
 def averageSentenceLength(text):
-    '''Add a comment here and implement! (Part I)
+    '''Returns a float representing the average sentence length in a given text.
+    
+    Parameters:
+        text - A list of strings
     '''    
-    pass # remove this and add your own code instead
+    sentenceList = getSentences(text)
+    avg = 0
+    for sentence in sentenceList:
+        avg += len(getWords(sentence))
+        
+    return avg / len(sentenceList)
 
 
 def averageSentenceComplexity(text):
-    '''Add a comment here and implement! (Part I)
-    '''    
-    pass # remove this and add your own code instead
+    '''Returns a float representing the average number of phrases per sentence 
+    in a given text.
+    
+    Parameters:
+        text - A list of strings
+    '''
+    phrases = 0
+    for line in text:
+        for char in line:
+            if char == ',' or char == ';' or char == ':':
+                phrases += 1
+
+    return (phrases + len(getSentences(text))) / len(getSentences(text))
 
 
 def typeToTokenRatio(text):
-    '''Add a comment here and implement! (Part II)
-    '''    
-    pass # remove this and add your own code instead
+    '''Returns the ratio between the number of distinct words in a text divided 
+    by the total number of words in text. Gives a sense of the author's 
+    repetitiveness.
+
+    Parameters: 
+        text - A list of strings
+    '''
+    distinctWords = []
+    for word in getWords(text):
+        if word not in distinctWords:
+            distinctWords.append(word)
+    
+    return len(distinctWords) / len(getWords(text))
 
 
 def hapaxLegomanaRatio(text):
-    '''Add a comment here and implement! (Part II)
+    '''Returns the ratio between the total number of words that occur exactly 
+    once divided by the total number of words in text. Again indicates 
+    repetetiveness.
+
+    Parameters:
+        text - A list of strings
     '''
-    pass # remove this and add your own code instead 
+    uniqueWords = {}
+
+    for word in getWords(text):
+        if word not in uniqueWords:
+            uniqueWords[word] = 1
+        else:
+            uniqueWords[word] += 1
+
+    onceWords = 0
+    for word in uniqueWords:
+        if uniqueWords[word] == 1:
+            onceWords += 1
+
+    return onceWords / len(getWords(text))
 
 
 def functionWordRatios(text):
-    '''Add a comment here and implement! (Part II)
+    '''Returns a list of ratios for each function word given by getAllFunctionWords.
+    
+    Parameters:
+        text - A list of strings
     '''
-    pass # remove this and add your own code instead 
+    functionWords = getAllFunctionWords()
+    wordCount = {}
+    ratios = []
+    for word in functionWords:
+        wordCount[word] = 0
+    
+    for word in getWords(text):
+        if word in functionWords:
+            wordCount[word] += 1
+            
+    for word in wordCount:
+        ratios.append(wordCount[word] / len(getWords(text)))
+        
+    return ratios
 
 
 def getAllFunctionWords():
@@ -150,7 +239,11 @@ def computeSimilarity(signature1, signature2, weights):
     signature2, and weights are all lists where the 0th value in
     the list is ignored.
     '''
-    pass # remove this and add your own code instead 
+    similarity = 0
+    for i in range (1, len(weights)):
+        similarity += abs(signature1[i] - signature2[i]) * weights[i]
+        
+    return similarity
 
 
 def getWeights():
@@ -161,7 +254,7 @@ def getWeights():
     function word weights. This function assumes FunctionWordList.txt
     is in the same directory as detectAuthor.py.
     '''
-    featureWeights = [0, 11, 0.4, 4,33 , 50]
+    featureWeights = [0, 11, 0.4, 4, 33, 50]
     file = open('FunctionWordList.txt', 'r')
     for line in file:
         featureWeights.append(float(line.strip().split()[1]))
@@ -230,4 +323,19 @@ def printSignature(signature):
 def main():
     '''Implement this and add a comment describing what it does!
     '''
-    pass # delete this line and add your own code
+    filename = input('Please enter a filename: ')
+    while os.path.exists(filename) != True:
+        print('File not found...')
+        filename = input('Please enter a filename: ')
+   
+    file = open(filename, 'r')
+    text = file.readlines()
+    file.close()
+
+    print('### Statistics for the file', filename, '###\n')
+    print('Average Word Length:', averageWordLength(text), 'characters.')
+    print('Average Sentence Length:', averageSentenceLength(text), 'words.')
+    print('Sentence Complexity:', averageSentenceComplexity(text), 
+         'phrases per sentence.')
+    print('Ratio of Distinct Words to Total Words:', typeToTokenRatio(text))
+    print('Hapax Legomana ratio:', hapaxLegomanaRatio(text))
