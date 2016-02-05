@@ -327,19 +327,30 @@ def printSignature(signature):
 def main():
     '''Implement this and add a comment describing what it does!
     '''
+    print('Welcome! This program guesses the author of a mystery text.')
     filename = input('Please enter a filename: ')
     while os.path.exists(filename) != True:
         print('File not found...')
         filename = input('Please enter a filename: ')
-   
+    
+    signatureDirectory = input('Please enter the name of the directory with the signature files: ')
+    while os.path.isdir(signatureDirectory) != True:
+        print('Invalid directory...')
+        signatureDirectory = input('Please enter the name of the directory with the signature files: ')
+        
     file = open(filename, 'r')
     text = file.readlines()
     file.close()
-
-    print('### Statistics for the file', filename, '###\n')
+    signature = calculateSignatureFromTextFile(text)
+    print('The most similar author was', getMostSimilarAuthor(signatureDirectory, signature))
+    print('\n### Additional statistics for the file', filename, '###\n')
     print('Average Word Length:', averageWordLength(text), 'characters.')
     print('Average Sentence Length:', averageSentenceLength(text), 'words.')
     print('Sentence Complexity:', averageSentenceComplexity(text), 
          'phrases per sentence.')
     print('Ratio of Distinct Words to Total Words:', typeToTokenRatio(text))
     print('Hapax Legomana ratio:', hapaxLegomanaRatio(text))
+    
+    
+if __name__ == '__main__':
+    main()
