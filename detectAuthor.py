@@ -52,7 +52,7 @@ def getSentences(text):
             elif sentence != '':
                 sentences.append(sentence)
                 sentence = ''
-
+    
     return sentences
 
 
@@ -91,7 +91,7 @@ def averageSentenceLength(text):
     avg = 0
     for sentence in sentenceList:
         avg += len(getWords(sentence))
-        
+    
     return avg / len(sentenceList)
 
 
@@ -102,32 +102,75 @@ def averageSentenceComplexity(text):
     Parameters:
         text - A list of strings
     '''
-    phrases = 1
+    phrases = 0
     for line in text:
         for char in line:
             if char == ',' or char == ';' or char == ':':
                 phrases += 1
 
-    avePhrases = (phrases + len(getSentences(text))) / len(getSentences(text))
-    return avePhrases
+    return (phrases + len(getSentences(text))) / len(getSentences(text))
 
 
 def typeToTokenRatio(text):
-    '''Add a comment here and implement! (Part II)
-    '''    
-    pass # remove this and add your own code instead
+    '''Returns the ratio between the number of distinct words in a text divided 
+    by the total number of words in text. Gives a sense of the author's 
+    repetitiveness.
+
+    Parameters: 
+        text - A list of strings
+    '''
+    distinctWords = []
+    for word in getWords(text):
+        if word not in distinctWords:
+            distinctWords.append(word)
+    
+    return len(distinctWords) / len(getWords(text))
 
 
 def hapaxLegomanaRatio(text):
-    '''Add a comment here and implement! (Part II)
+    '''Returns the ratio between the total number of words that occur exactly 
+    once divided by the total number of words in text. Again indicates 
+    repetetiveness.
+
+    Parameters:
+        text - A list of strings
     '''
-    pass # remove this and add your own code instead 
+    uniqueWords = {}
+
+    for word in getWords(text):
+        if word not in uniqueWords:
+            uniqueWords[word] = 1
+        else:
+            uniqueWords[word] += 1
+
+    onceWords = 0
+    for word in uniqueWords:
+        if uniqueWords[word] == 1:
+            onceWords += 1
+
+    return onceWords / len(getWords(text))
 
 
 def functionWordRatios(text):
-    '''Add a comment here and implement! (Part II)
+    '''Returns a list of ratios for each function word given by getAllFunctionWords.
+    
+    Parameters:
+        text - A list of strings
     '''
-    pass # remove this and add your own code instead 
+    functionWords = getAllFunctionWords()
+    wordCount = {}
+    ratios = []
+    for word in functionWords:
+        wordCount[word] = 0
+    
+    for word in getWords(text):
+        if word in functionWords:
+            wordCount[word] += 1
+            
+    for word in wordCount:
+        ratios.append(wordCount[word] / len(getWords(text)))
+        
+    return ratios
 
 
 def getAllFunctionWords():
@@ -155,20 +198,36 @@ def calculateSignatureFromURL(url):
     pass # remove this and add your own code instead
 
 
-def calculateSignatureFromTextFile(url):
-    '''TODO: Implement this function, filling in this comment in an
-    appropriate way. Make sure your function meets the specifications
-    in the assignment.
+def calculateSignatureFromTextFile(filename):
+    '''Returns a list of values for a given text file that represent its average word length,
+    average sentence length, average sentence complexity, type to token ratio, hapax legomana
+    ratio, and function word ratios, respectively.
+    
+    Parameters:
+        filename - Name of the file whose signature is to be calculated
     '''
-    pass # remove this and add your own code instead
+    file = open(filename, 'r')
+    text = file.readlines()
+    signature = ['']
+    signature.append(averageWordLength(text))
+    signature.append(averageSentenceLength(text))
+    signature.append(averageSentenceComplexity(text))
+    signature.append(typeToTokenRatio(text))
+    signature.append(hapaxLegomanaRatio(text))
+    functionRatios = functionWordRatios(text)
+    for i in functionRatios:
+        signature.append(i)
+    file.close()
+    
+    return signature
 
 
 def readSignature(filename):
-    '''Read a linguistic signature from filename and return it as 
-    list of features. 
+    '''Read a linguistic signature from filename and return it as
+    list of features.
     '''
     file = open(filename, 'r')
-    # The first feature is the name of the author (a string) so it 
+    # The first feature is the name of the author (a string) so it
     # doesn't need casting to float
     result = [file.readline().strip()]
     # All remaining features are real numbers
@@ -196,7 +255,11 @@ def computeSimilarity(signature1, signature2, weights):
     signature2, and weights are all lists where the 0th value in
     the list is ignored.
     '''
-    pass # remove this and add your own code instead 
+    similarity = 0
+    for i in range (1, len(signature1) - 1):
+        similarity += abs(signature1[i] - signature2[i]) * weights[i]
+    
+    return similarity
 
 
 def getWeights():
@@ -207,7 +270,7 @@ def getWeights():
     function word weights. This function assumes FunctionWordList.txt
     is in the same directory as detectAuthor.py.
     '''
-    featureWeights = [0, 11, 0.4, 4,33 , 50]
+    featureWeights = [0, 11, 0.4, 4, 33, 50]
     file = open('FunctionWordList.txt', 'r')
     for line in file:
         featureWeights.append(float(line.strip().split()[1]))
@@ -218,37 +281,25 @@ def getWeights():
 def getMostSimilarAuthor(signatureDirectory, mysterySignature):
     '''Returns the author name for the signature
     that has the smallest similarity score (smaller = more similar).
-    The code for going through a directory of files and reading the 
-    signatures is provided for you. You need to modify this function
-    to find and return the most similar author. 
+    
+    Parameters:
+        signatureDirectory - Directory where known signatures are located
+        mysterySignature   - Signature to be analyzed
     '''
-    # The weights are a mixture of hardcoded weights for the non-function
-    # word features and specified in the function word file.
     featureWeights = getWeights()
-    
-    # The line below lists all files that are in the directory
-    # signature directory. Note that this means you must have
-    # only signature files in that directory - either ones I
-    # gave you or ones you've created.
     files = os.listdir(signatureDirectory)
-
-    # You'll likely want to declare some variables prior to the
-    # for loop to be able to compute author with the best similarity.
-    # Make sure you have a good idea for the steps you want to take
-    # to find the best similarity before you actually do it; make
-    # sure you and your partner can explain the algorithm to one another.
+    bestSimilarity = computeSimilarity(mysterySignature, readSignature(signatureDirectory + os.sep + files[1]), featureWeights)
+    bestMatch = ''
     for currentFile in files:
-        # The condition below ignores hidden files that may be created 
-        # by your operating system
         if not currentFile.startswith('.'):
-            # The line below calculates the signature for the current file
             signature = readSignature(signatureDirectory + os.sep + currentFile)
+            similarity = computeSimilarity(mysterySignature, signature, featureWeights)
             
-            # Now, compute the similarity between the signatures (you should
-            # have a function to help you!) and do anything you need to be
-            # able to return the most similar author at the end
+            if similarity <= bestSimilarity:
+                bestSimilarity = similarity
+                bestMatch = signature[0]
     
-    # Don't forget to return the most similar author at the end
+    return bestMatch
 
 
 # Printing and user interface
@@ -290,3 +341,5 @@ def main():
     print('Average Sentence Length:', averageSentenceLength(text), 'words.')
     print('Sentence Complexity:', averageSentenceComplexity(text), 
          'phrases per sentence.')
+    print('Ratio of Distinct Words to Total Words:', typeToTokenRatio(text))
+    print('Hapax Legomana ratio:', hapaxLegomanaRatio(text))
