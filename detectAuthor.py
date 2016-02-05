@@ -218,9 +218,10 @@ def getWeights():
 def getMostSimilarAuthor(signatureDirectory, mysterySignature):
     '''Returns the author name for the signature
     that has the smallest similarity score (smaller = more similar).
-    The code for going through a directory of files and reading the 
-    signatures is provided for you. You need to modify this function
-    to find and return the most similar author. 
+    
+    Parameters:
+        signatureDirectory - Directory where known signatures are located
+        mysterySignature   - Signature to be analyzed
     '''
     # The weights are a mixture of hardcoded weights for the non-function
     # word features and specified in the function word file.
