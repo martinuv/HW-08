@@ -287,27 +287,17 @@ def getMostSimilarAuthor(signatureDirectory, mysterySignature):
         mysterySignature   - Signature to be analyzed
     '''
     featureWeights = getWeights()
-    
-    # The line below lists all files that are in the directory
-    # signature directory. Note that this means you must have
-    # only signature files in that directory - either ones I
-    # gave you or ones you've created.
     files = os.listdir(signatureDirectory)
-
     bestSimilarity = computeSimilarity(mysterySignature, readSignature(signatureDirectory + os.sep + files[1]), featureWeights)
-    bestMatch = files[1][0]
-    print(bestMatch)
+    bestMatch = ''
     for currentFile in files:
-        # The condition below ignores hidden files that may be created 
-        # by your operating system
         if not currentFile.startswith('.'):
-            # The line below calculates the signature for the current file
             signature = readSignature(signatureDirectory + os.sep + currentFile)
             similarity = computeSimilarity(mysterySignature, signature, featureWeights)
-            print(similarity)
-            if similarity < bestSimilarity:
+            
+            if similarity <= bestSimilarity:
                 bestSimilarity = similarity
-                bestMatch = currentFile[0]
+                bestMatch = signature[0]
     
     return bestMatch
 
